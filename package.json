@@ -1,0 +1,44 @@
+{
+  "name": "collision-painter",
+  "version": "1.0.0",
+  "license": "MIT",
+  "private": true,
+  "source": "src/index.html",
+  "browserslist": "> 0.5%, last 2 versions, Firefox ESR, not dead",
+  "staticFiles": {
+    "staticPath": "static",
+    "distDir": "dist/static"
+  },
+  "scripts": {
+    "start": "rimraf dist .parcel-cache && parcel --port 3000",
+    "watch": "parcel watch",
+    "build": "rimraf dist .parcel-cache && parcel build --no-cache",
+    "serve": "http-server ./dist --proxy http://localhost:8080?"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.14.12",
+    "@mui/material": "^5.14.12",
+    "clsx": "^2.0.0",
+    "file-saver": "^2.0.5",
+    "immer": "^10.0.3",
+    "normalize.css": "^8.0.1",
+    "pixi.js": "^7.3.1",
+    "polylabel": "^1.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "uuid": "^9.0.1",
+    "zustand": "^4.4.2"
+  },
+  "devDependencies": {
+    "@parcel/packager-raw-url": "2.9.3",
+    "@parcel/transformer-svg-react": "^2.9.3",
+    "@parcel/transformer-webmanifest": "2.9.3",
+    "http-server": "^14.1.1",
+    "parcel": "^2.9.3",
+    "parcel-reporter-static-files-copy": "^1.5.3",
+    "process": "^0.11.10",
+    "rimraf": "^5.0.5"
+  }
+}

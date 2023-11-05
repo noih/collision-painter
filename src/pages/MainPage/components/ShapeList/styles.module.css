@@ -1,0 +1,18 @@
+.list {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  max-height: 300px;
+  width: 300px;
+  background-color: #121212;
+  overflow-y: auto;
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+}
+
+.white {
+  fill: white;
+}

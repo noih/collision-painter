@@ -1,0 +1,40 @@
+.panel {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 300px;
+  background-color: #121212;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+}
+
+.circle > div, .rect > div, .ellipse > div {
+  margin: 10px;
+  width: calc(100% - 20px);
+}
+
+.customized > .points {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.customized .fields {
+  width: calc(100% - 20px);
+}
+
+.customized .fields div:first-child {
+  margin-bottom: 10px;
+}
+
+.customized > .bar {
+  margin: 10px 16px;
+  justify-content: space-between;
+}
