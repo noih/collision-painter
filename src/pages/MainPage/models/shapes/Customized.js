@@ -100,7 +100,8 @@ class Customized extends Shape {
   serialize = () => {
     return {
       ...super.serialize(),
-      points: this.points
+      points: this.points.map((p) => ({ x: p.x, y: p.y })),
+      isClose: this.isClose
     }
   }
 }
