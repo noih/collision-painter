@@ -23,17 +23,17 @@ export default function useInitScene() {
       const { setScene } = useSceneStore.getState()
 
       const c = new PIXI.Container()
+      c.sortableChildren = true
+      c.pivot.set(file.width / 2, file.height / 2)
+
       setScene(c) // ! Note: set before draw (coz async)
 
       let sprite = null
 
       const draw = async (retry = 3) => {
         try {
-          c.sortableChildren = true
-
           const base64 = await AsyncFileReader.readAsDataURL(file)
           sprite = PIXI.Sprite.from(base64)
-          sprite.anchor.set(0.5)
           sprite.zIndex = 0 // always at the bottom
           c.addChild(sprite)
 

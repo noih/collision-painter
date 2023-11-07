@@ -14,6 +14,7 @@ import GitHubIcon from '@mui/icons-material/GitHub'
 
 import { useFileStore, useShapeStore } from '/src/stores'
 import AsyncFileReader from '/src/modules/AsyncFileReader.js'
+import imageSize from '/src/modules/ImageSize.js'
 import is from '/src/utils/is.js'
 
 import * as styles from './styles.module.css'
@@ -54,20 +55,33 @@ function Header(props) {
   )
 
   const onFileChange = useCallback(
-    (ev) => {
+    async (ev) => {
       try {
-        const files = Array.from(ev.target.files).sort((a, b) => {
-          /**
-           * If there are numbers in the file name, sort by the last number,
-           * otherwise sort by string
-           */
-          const [an] = a.name.match(/(\d+)(?!.*\d)/) || []
-          const [bn] = b.name.match(/(\d+)(?!.*\d)/) || []
-          if (an && bn) {
-            return Number(an) - Number(bn)
-          }
-          return a > b ? 1 : -1
-        })
+        const files = await Promise.all(
+          Array
+            .from(ev.target.files)
+            .sort((a, b) => {
+              /**
+               * If there are numbers in the file name, sort by the last number,
+               * otherwise sort by string
+               */
+              const [an] = a.name.match(/(\d+)(?!.*\d)/) || []
+              const [bn] = b.name.match(/(\d+)(?!.*\d)/) || []
+              if (an && bn) {
+                return Number(an) - Number(bn)
+              }
+              return a > b ? 1 : -1
+            })
+            .map(async (file) => {
+              const info = await imageSize(file)
+
+              // ! Note: inject width / height
+              file.width = info.width
+              file.height = info.height
+
+              return file
+            })
+        )
 
         if (!files.length) { return } // do nothing
 
