@@ -97,7 +97,7 @@ const TopToolBar = (props) => {
 
       // redraw
       const shapes = ss.shapesMap[fs.selected] || []
-      for (shape of shapes) {
+      for (const shape of shapes) {
         shape.draw()
       }
     },
