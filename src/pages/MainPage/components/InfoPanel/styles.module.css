@@ -38,3 +38,7 @@
   margin: 10px 16px;
   justify-content: space-between;
 }
+
+.customized > .tags {
+  margin: 15px 15px 5px 15px;
+}

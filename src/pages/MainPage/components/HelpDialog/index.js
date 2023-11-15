@@ -1,11 +1,9 @@
 import clsx from 'clsx'
 
 import Avatar from '@mui/material/Avatar'
-import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
 import Divider from '@mui/material/Divider'
 import Dialog from '@mui/material/Dialog'
-import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
@@ -56,10 +54,6 @@ const ToolBar = [
   {
     icon: <CustomizedIcon className={clsx(styles.icon, styles.white)} />,
     description: 'Draw a custom shape, which can be a point, many lines, or a polygon. You can use the Alt (Win) or Cmd (⌘) key to quickly add a point.'
-  },
-  {
-    icon: <DecimalArrowRight className={clsx(styles.icon, styles.white)} />,
-    description: 'Set the precision of coordinates.'
   }
 ]
 
@@ -79,6 +73,8 @@ const HelpDialog = (props) => {
       </DialogTitle>
 
       <DialogContent>
+        <DialogContentText sx={{ marginBottom: 1, fontWeight: 'bold' }}>Action Bar</DialogContentText>
+
         {
           ActionBar.map((item, index) => {
             const margin = index === 0 || index === (ActionBar.length - 1) ? 0 : '10px 0'
@@ -92,6 +88,7 @@ const HelpDialog = (props) => {
         }
 
         <Divider sx={{ margin: '10px 0' }} />
+        <DialogContentText sx={{ marginBottom: 1, fontWeight: 'bold' }}>Tools</DialogContentText>
 
         {
           ToolBar.map((item, index) => {
@@ -104,13 +101,24 @@ const HelpDialog = (props) => {
             )
           })
         }
-      </DialogContent>
 
-      <DialogActions>
-        <Button onClick={onClose} autoFocus>
-          Ok
-        </Button>
-      </DialogActions>
+        <Divider sx={{ margin: '10px 0' }} />
+        <DialogContentText sx={{ marginBottom: '8px', fontWeight: 'bold' }}>Settings</DialogContentText>
+
+        <Box sx={{ display: 'flex', margin: 0, alignItems: 'center' }}>
+          <Avatar sx={{ marginRight: 1 }}>
+            <DecimalArrowRight className={clsx(styles.icon, styles.white)} />
+          </Avatar>
+          <DialogContentText>Set the precision of coordinates.</DialogContentText>
+        </Box>
+
+        <div className={styles.txtItem}>
+          <DialogContentText sx={{ margin: '15px 0 5px 0' }}>Tags</DialogContentText>
+          <DialogContentText sx={{ marginLeft: '15px' }}>
+            Global tag management, where tags are used to classify each shape. If a used tag is deleted, no automatic action will be taken; manual deletion is required for each individual case.
+          </DialogContentText>
+        </div>
+      </DialogContent>
     </Dialog>
   )
 }

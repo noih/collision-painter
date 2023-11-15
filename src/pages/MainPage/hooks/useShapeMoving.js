@@ -1,4 +1,5 @@
 import { useEffect, useCallback, useRef } from 'react'
+import { useShallow } from 'zustand/react/shallow'
 
 import { useSceneStore, useShapeStore, useAppStore } from '/src/stores'
 import numeric from '/src/utils/numeric'
@@ -6,8 +7,10 @@ import numeric from '/src/utils/numeric'
 import ShapeMovingCtrl from '../models/controls/ShapeMoving.js'
 
 export default function useShapeMoving() {
-  const { selected } = useShapeStore()
-  const { scene, scale } = useSceneStore()
+  // FIXME: shallow
+  const [selected] = useShapeStore((state) => [state.selected])
+
+  const [scene, scale] = useSceneStore(useShallow((state) => [state.scene, state.scale]))
   const distances = useRef([])
 
   const modifiedAt = selected?.modifiedAt || 0

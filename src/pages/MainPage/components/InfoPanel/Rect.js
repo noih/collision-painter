@@ -1,6 +1,7 @@
 import { useCallback } from 'react'
 
 import TextField from '@mui/material/TextField'
+import Autocomplete from '@mui/material/Autocomplete'
 
 import { useAppStore, useShapeStore } from '/src/stores'
 import numeric from '/src/utils/numeric'
@@ -9,7 +10,8 @@ import is from '/src/utils/is'
 import * as styles from './styles.module.css'
 
 function Rect(props) {
-  const [shape] = useShapeStore((state) => [state.selected])
+  const shape = useShapeStore((state) => state.selected)
+  const tags = useAppStore((state) => state.tags)
 
   const setParams = useCallback(
     (params) => {
@@ -23,6 +25,7 @@ function Rect(props) {
         if (is.exist(params.y)) { selected.y = numeric.round(Number(params.y), precision) }
         if (is.exist(params.width)) { selected.width = numeric.round(Number(params.width), precision) }
         if (is.exist(params.height)) { selected.height = numeric.round(Number(params.height), precision) }
+        if (params.tags) { selected.tags = params.tags }
 
         selected.modifiedAt = Date.now()
 
@@ -38,9 +41,24 @@ function Rect(props) {
   const onPosYChange = useCallback((ev) => setParams({ y: ev.target.value }), [setParams])
   const onWidthChange = useCallback((ev) => setParams({ width: ev.target.value }), [setParams])
   const onHeightChange = useCallback((ev) => setParams({ height: ev.target.value }), [setParams])
+  const onTagsChange = useCallback((ev, value) => setParams({ tags: value }), [setParams])
 
   return (
     <div className={styles.rect}>
+      <Autocomplete
+        multiple
+        filterSelectedOptions
+        options={tags}
+        value={shape.tags}
+        onChange={onTagsChange}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label="Tags"
+            placeholder="Tag"
+          />
+        )}
+      />
       <TextField
         label="x"
         type="number"

@@ -1,4 +1,5 @@
 import { useCallback } from 'react'
+import { useShallow } from 'zustand/react/shallow'
 
 import List from '@mui/material/List'
 import ListItemButton from '@mui/material/ListItemButton'
@@ -8,7 +9,7 @@ import { useFileStore, useShapeStore } from '/src/stores'
 import * as styles from './styles.module.css'
 
 function Explorer(props) {
-  const [files, selectedFile] = useFileStore((state) => [state.files, state.selected])
+  const [files, selectedFile] = useFileStore(useShallow((state) => [state.files, state.selected]))
 
   const onItemClick = useCallback(
     (idx) => {

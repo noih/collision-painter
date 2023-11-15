@@ -1,4 +1,5 @@
-import { useEffect, useCallback, useRef } from 'react'
+import { useEffect, useCallback } from 'react'
+import { useShallow } from 'zustand/react/shallow'
 
 import { useSceneStore, useShapeStore, useAppStore } from '/src/stores'
 import numeric from '/src/utils/numeric'
@@ -6,8 +7,8 @@ import numeric from '/src/utils/numeric'
 import CustomizedPointsCtrl from '../models/controls/CustomizedPoints.js'
 
 export default function useCustomizedPoints() {
-  const { selected } = useShapeStore()
-  const { scene, scale } = useSceneStore()
+  const selected = useShapeStore((state) => state.selected)
+  const [scene, scale] = useSceneStore(useShallow((state) => [state.scene, state.scale]))
 
   const modifiedAt = selected?.modifiedAt || 0
 

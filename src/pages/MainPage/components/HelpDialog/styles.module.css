@@ -6,3 +6,7 @@
 .white {
   fill: white;
 }
+
+.txtItem {
+  margin-left: 5px;
+}

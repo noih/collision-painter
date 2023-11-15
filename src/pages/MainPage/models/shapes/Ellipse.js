@@ -6,7 +6,7 @@ import Shape from './Shape'
 
 class Ellipse extends Shape {
   constructor(params) {
-    super('ellipse')
+    super('ellipse', params)
 
     this._graphics = new PIXI.Graphics()
     this._graphics.alpha = 0.25

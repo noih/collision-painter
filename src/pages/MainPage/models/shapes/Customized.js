@@ -10,7 +10,7 @@ import Shape from './Shape'
  */
 class Customized extends Shape {
   constructor(params) {
-    super('customized')
+    super('customized', params)
 
     this._graphics = new PIXI.Graphics()
     this._graphics.alpha = 0.25

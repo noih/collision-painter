@@ -1,4 +1,5 @@
 import { useLayoutEffect, useEffect } from 'react'
+import { useShallow } from 'zustand/react/shallow'
 import * as PIXI from 'pixi.js'
 
 import App from '/src/modules/PIXI'
@@ -7,8 +8,10 @@ import AsyncFileReader from '/src/modules/AsyncFileReader'
 import { delay } from '/src/utils'
 
 export default function useInitScene() {
-  const { scene } = useSceneStore()
-  const { files, selected, lastAttachedAt } = useFileStore()
+  const scene = useSceneStore((state) => state.scene)
+  const [files, selected, lastAttachedAt] = useFileStore(
+    useShallow((state) => [state.files, state.selected, state.lastAttachedAt])
+  )
 
   /**
    * init the selected scene

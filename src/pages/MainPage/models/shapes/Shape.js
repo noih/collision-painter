@@ -9,9 +9,11 @@ export default class Shape {
 
   // mainly used to trigger control update
   modifiedAt = 0
+  tags = []
 
-  constructor(type) {
-    this.type = type
+  constructor(type, params) {
+    this.type = type || 'shape'
+    this.tags = params.tags || []
 
     this.serialize = this.serialize.bind(this)
     this.draw = this.draw.bind(this)
@@ -45,7 +47,8 @@ export default class Shape {
 
   serialize() {
     return {
-      type: this.type
+      type: this.type,
+      tags: this.tags
     }
   }
 }

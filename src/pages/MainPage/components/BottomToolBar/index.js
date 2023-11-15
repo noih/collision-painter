@@ -1,5 +1,6 @@
 import { useCallback } from 'react'
 import clsx from 'clsx'
+import { useShallow } from 'zustand/react/shallow'
 
 import { styled } from '@mui/material/styles'
 import Slider from '@mui/material/Slider'
@@ -17,7 +18,7 @@ const CustomSlider = styled(Slider)({
 })
 
 export default function BottomToolBar(props) {
-  const { scale, setScale } = useSceneStore()
+  const [scale, setScale] = useSceneStore(useShallow((state) => [state.scale, state.setScale]))
 
   const onScaleChange = useCallback((ev) => setScale(ev.target.value / 100), [setScale])
   const onScaleReset = useCallback(() => setScale(1), [setScale])

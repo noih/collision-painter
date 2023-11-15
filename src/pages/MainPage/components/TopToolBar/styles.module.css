@@ -21,11 +21,3 @@
   display: flex;
   align-items: center;
 }
-
-.decimalIcon {
-  margin: 5px;
-}
-
-.decimalText {
-  width: 80px;
-}

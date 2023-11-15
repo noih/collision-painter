@@ -6,7 +6,7 @@ import Shape from './Shape'
 
 class Rect extends Shape {
   constructor(params) {
-    super('rect')
+    super('rect', params)
 
     this._graphics = new PIXI.Graphics()
     this._graphics.alpha = 0.25

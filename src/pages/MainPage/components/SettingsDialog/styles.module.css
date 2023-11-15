@@ -1,0 +1,25 @@
+.icon {
+  width: 24px;
+  height: 24px;
+}
+
+.white {
+  fill: white;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+}
+
+.col > *:not(:last-child) {
+  margin: 0 0 20px 0;
+}
+
+.decimalIcon {
+  margin: 5px;
+}
+
+.decimalText {
+  width: 80px;
+}

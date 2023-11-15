@@ -1,11 +1,12 @@
 import { useEffect, useCallback } from 'react'
+import { useShallow } from 'zustand/react/shallow'
 
 import App from '/src/modules/PIXI'
 import { useSceneStore } from '/src/stores'
 import useWindowResize from '/src/hooks/useWindowResize'
 
 export default function useZoom() {
-  const { scene, scale } = useSceneStore()
+  const [scene, scale] = useSceneStore(useShallow((state) => [state.scene, state.scale]))
 
   const zoom = useCallback(
     (v) => {

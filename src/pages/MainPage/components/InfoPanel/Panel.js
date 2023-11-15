@@ -6,7 +6,8 @@ import Ellipse from './Ellipse'
 import Rect from './Rect'
 
 const Panel = (props) => {
-  const { selected } = useShapeStore()
+  // FIXME: shallow
+  const [selected] = useShapeStore((state) => [state.selected])
 
   switch (selected?.type) {
     case 'circle': return <Circle />

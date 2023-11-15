@@ -1,4 +1,5 @@
 import { useCallback } from 'react'
+import { useShallow } from 'zustand/react/shallow'
 import clsx from 'clsx'
 
 import List from '@mui/material/List'
@@ -28,8 +29,8 @@ function getIcon(type) {
 }
 
 const ShapeList = (props) => {
-  const [selectedFile] = useFileStore((state) => [state.selected])
-  const [shapesMap, selectedShape] = useShapeStore((state) => [state.shapesMap, state.selected])
+  const selectedFile = useFileStore((state) => state.selected)
+  const [shapesMap, selectedShape] = useShapeStore(useShallow((state) => [state.shapesMap, state.selected]))
 
   const [listRef, anchorRef] = useAutoScrollBottom()
 
@@ -45,7 +46,7 @@ const ShapeList = (props) => {
     (ev, shape) => {
       ev.stopPropagation()
 
-      const selectedFile = useFileStore.getState().selected
+      const { selected: selectedFile } = useFileStore.getState()
       const ss = useShapeStore.getState()
       const { scene } = useSceneStore.getState()
 

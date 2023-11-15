@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
+import { useShallow } from 'zustand/react/shallow'
 
 import { useAppStore, useSceneStore, useShapeStore, useFileStore } from '/src/stores'
 
@@ -7,23 +8,25 @@ import { Select } from '../models/tools'
 export default function useTool() {
   const [tool, setTool] = useState(Select)
 
-  const { scene } = useSceneStore()
-  const [selectedFile] = useFileStore((state) => [state.selected])
+  const scene = useSceneStore((state) => state.scene)
+  const selectedFile = useFileStore((state) => state.selected)
   const [
     selectedShape,
     setSelectedShape,
     addShape,
     removeShape,
     updateShape
-  ] = useShapeStore((state) => [
-    state.selected,
-    state.setSelected,
-    state.add,
-    state.remove,
-    state.update
-  ])
+  ] = useShapeStore(useShallow(
+    (state) => [
+      state.selected,
+      state.setSelected,
+      state.add,
+      state.remove,
+      state.update
+    ]
+  ))
 
-  const { precision } = useAppStore()
+  const precision = useAppStore((state) => state.precision)
 
   useEffect(
     () => {

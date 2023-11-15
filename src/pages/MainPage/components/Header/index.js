@@ -11,8 +11,9 @@ import AttachFileIcon from '@mui/icons-material/AttachFile'
 import FileDownloadIcon from '@mui/icons-material/FileDownload'
 import HelpIcon from '@mui/icons-material/Help'
 import GitHubIcon from '@mui/icons-material/GitHub'
+import SettingsIcon from '@mui/icons-material/Settings'
 
-import { useFileStore, useShapeStore } from '/src/stores'
+import { useFileStore, useShapeStore, useAppStore } from '/src/stores'
 import AsyncFileReader from '/src/modules/AsyncFileReader.js'
 import imageSize from '/src/modules/ImageSize.js'
 import is from '/src/utils/is.js'
@@ -20,30 +21,43 @@ import is from '/src/utils/is.js'
 import * as styles from './styles.module.css'
 
 import HelpDialog from '../HelpDialog'
+import SettingsDialog from '../SettingsDialog'
 import { Factory as ShapeFactory } from '../../models/shapes/index.js'
+
 
 function Header(props) {
   const importRef = useRef(null)
   const attachRef = useRef(null)
   const [showHelp, setShowHelp] = useState(false)
-  const { lastAttachedAt } = useFileStore()
+  const [showSettings, setShowSettings] = useState(false)
+  const lastAttachedAt = useFileStore((state) => state.lastAttachedAt)
 
   const importFile = useCallback(() => importRef.current?.click(), [])
   const attachJSON = useCallback(() => attachRef.current?.click(), [])
   const openHelp = useCallback(() => setShowHelp(true), [setShowHelp])
   const closeHelp = useCallback(() => setShowHelp(false), [setShowHelp])
+  const openSettings = useCallback(() => setShowSettings(true), [setShowSettings])
+  const closeSettings = useCallback(() => setShowSettings(false), [setShowSettings])
 
   const exportJSON = useCallback(
     () => {
       try {
         const { shapesMap } = useShapeStore.getState()
         const { files } = useFileStore.getState()
+        const { precision, tags } = useAppStore.getState()
 
-        const data = {}
+        const data = {
+          version: 1,
+          shapes: {},
+          settings: {
+            precision,
+            tags
+          }
+        }
 
         for (const [index, shapes] of Object.entries(shapesMap)) {
           const { name } = files[index]
-          data[name] = shapes?.map((shape) => shape.serialize()) || []
+          data.shapes[name] = shapes?.map((shape) => shape.serialize()) || []
         }
 
         saveAs(new Blob([JSON.stringify(data, null, 2)], { type: 'text/plain;charset=utf-8' }), 'collision.json')
@@ -114,6 +128,16 @@ function Header(props) {
         const json = await AsyncFileReader.readAsText(file)
         const parsed = JSON.parse(json)
 
+        if (!parsed || parsed.version !== 1) {
+          return // do nothing
+        }
+
+        // settings
+        const { setPrecision, setTags } = useAppStore.getState()
+        const precision = Number(parsed.settings?.precision)
+        setPrecision(Number.isNaN(precision) ? 16 : precision)
+        setTags(parsed.settings?.tags || [])
+
         // gen filename -> index map
         const { files, setLastAttachedAt } = useFileStore.getState()
         const idxMap = {} // { [filename]: index }
@@ -123,7 +147,7 @@ function Header(props) {
 
         // add shapes
         const { add } = useShapeStore.getState()
-        for (const [name, shapes] of Object.entries(parsed)) {
+        for (const [name, shapes] of Object.entries(parsed.shapes || {})) {
           for (const shape of shapes) {
             const index = idxMap[name]
             const s = ShapeFactory(shape)
@@ -196,6 +220,15 @@ function Header(props) {
         <Box sx={{ flexGrow: 1 }} />
         <Box>
           <IconButton
+            aria-label="settings"
+            color="inherit"
+            onClick={openSettings}
+          >
+            <SettingsIcon />
+          </IconButton>
+        </Box>
+        <Box>
+          <IconButton
             aria-label="help"
             color="inherit"
             onClick={openHelp}
@@ -218,6 +251,11 @@ function Header(props) {
       <HelpDialog
         isOpen={showHelp}
         onClose={closeHelp}
+      />
+
+      <SettingsDialog
+        isOpen={showSettings}
+        onClose={closeSettings}
       />
     </AppBar>
   )
