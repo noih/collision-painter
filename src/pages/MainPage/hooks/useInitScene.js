@@ -29,6 +29,14 @@ export default function useInitScene() {
       c.sortableChildren = true
       c.pivot.set(file.width / 2, file.height / 2)
 
+      // border
+      const border = new PIXI.Graphics()
+      border.zIndex = -1
+      border
+        .lineStyle(0.5, 0x2a6b3b, 0.5)
+        .drawRect(-0.25, -0.25, file.width + 0.5, file.height + 0.5)
+      c.addChild(border)
+
       setScene(c) // ! Note: set before draw (coz async)
 
       let sprite = null
@@ -53,6 +61,7 @@ export default function useInitScene() {
 
       return () => {
         App.stage.removeChildren()
+        border.destroy(true)
         c.destroy(false) // only destroy the container (exclude children)
         sprite?.destroy(true)
       }
