@@ -78,16 +78,17 @@ export default function useInitScene() {
         return () => {}
       }
 
-      const { selected } = useFileStore.getState()
-      const { shapesMap } = useShapeStore.getState()
+      const { selected: fileSelected } = useFileStore.getState()
+      const { shapesMap, setSelected } = useShapeStore.getState()
 
-      const shapes = (shapesMap[selected] || []).map((shape, idx) => {
+      const shapes = (shapesMap[fileSelected] || []).map((shape, idx) => {
         shape.container.zIndex = idx + 1 // default zIndex
         return shape.container
       })
 
       if (shapes.length) {
         scene.addChild(...shapes)
+        setSelected(shapesMap[fileSelected][0])
       }
 
       return () => {}

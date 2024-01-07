@@ -56,6 +56,24 @@ function Customized(props) {
     []
   )
 
+  const onNameChange = useCallback(
+    (ev) => {
+      const ss = useShapeStore.getState()
+
+      ss.update((state) => {
+        const { selected, setSelected } = state
+
+        selected.name = ev.target.value
+
+        selected.modifiedAt = Date.now()
+        setSelected(selected)
+      })
+
+      ss.selected.draw()
+    },
+    []
+  )
+
   const onTagsChange = useCallback(
     (ev, value, reason, detail) => {
       const ss = useShapeStore.getState()
@@ -91,7 +109,16 @@ function Customized(props) {
           />
         )}
       />
-
+      <TextField
+        label="name"
+        type="text"
+        size="small"
+        InputLabelProps={{
+          shrink: true
+        }}
+        value={shape.name}
+        onChange={onNameChange}
+      />
       <div className={styles.points}>
         <List
           ref={listRef}

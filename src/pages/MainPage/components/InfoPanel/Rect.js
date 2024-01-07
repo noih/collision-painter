@@ -21,6 +21,7 @@ function Rect(props) {
       ss.update((state) => {
         const { selected } = state
 
+        if (is.exist(params.name)) { selected.name = params.name }
         if (is.exist(params.x)) { selected.x = numeric.round(Number(params.x), precision) }
         if (is.exist(params.y)) { selected.y = numeric.round(Number(params.y), precision) }
         if (is.exist(params.width)) { selected.width = numeric.round(Number(params.width), precision) }
@@ -37,6 +38,7 @@ function Rect(props) {
     []
   )
 
+  const onNameChange = useCallback((ev) => setParams({ name: ev.target.value }), [setParams])
   const onPosXChange = useCallback((ev) => setParams({ x: ev.target.value }), [setParams])
   const onPosYChange = useCallback((ev) => setParams({ y: ev.target.value }), [setParams])
   const onWidthChange = useCallback((ev) => setParams({ width: ev.target.value }), [setParams])
@@ -58,6 +60,16 @@ function Rect(props) {
             placeholder="Tag"
           />
         )}
+      />
+      <TextField
+        label="name"
+        type="text"
+        size="small"
+        InputLabelProps={{
+          shrink: true
+        }}
+        value={shape.name}
+        onChange={onNameChange}
       />
       <TextField
         label="x"

@@ -10,10 +10,12 @@ export default class Shape {
   // mainly used to trigger control update
   modifiedAt = 0
   tags = []
+  name = ''
 
   constructor(type, params) {
     this.type = type || 'shape'
     this.tags = params.tags || []
+    this.name = params.name || ''
 
     this.serialize = this.serialize.bind(this)
     this.draw = this.draw.bind(this)
@@ -48,7 +50,8 @@ export default class Shape {
   serialize() {
     return {
       type: this.type,
-      tags: this.tags
+      tags: this.tags,
+      name: this.name
     }
   }
 }

@@ -21,6 +21,7 @@ function Circle(props) {
       ss.update((state) => {
         const { selected } = state
 
+        if (is.exist(params.name)) { selected.name = params.name }
         if (is.exist(params.radius) && params.radius >= 0) { selected.radius = numeric.round(Number(params.radius), precision) }
         if (is.exist(params.x)) { selected.x = numeric.round(Number(params.x), precision) }
         if (is.exist(params.y)) { selected.y = numeric.round(Number(params.y), precision) }
@@ -36,6 +37,7 @@ function Circle(props) {
     []
   )
 
+  const onNameChange = useCallback((ev) => setParams({ name: ev.target.value }), [setParams])
   const onRadiusChange = useCallback((ev) => setParams({ radius: ev.target.value }), [setParams])
   const onPosXChange = useCallback((ev) => setParams({ x: ev.target.value }), [setParams])
   const onPosYChange = useCallback((ev) => setParams({ y: ev.target.value }), [setParams])
@@ -56,6 +58,16 @@ function Circle(props) {
             placeholder="Tag"
           />
         )}
+      />
+      <TextField
+        label="name"
+        type="text"
+        size="small"
+        InputLabelProps={{
+          shrink: true
+        }}
+        value={shape.name}
+        onChange={onNameChange}
       />
       <TextField
         label="x"
